@@ -4,13 +4,16 @@
 import pyupbit
 
 
+
+
 # coin의 현재 값 (krw)를 리턴 한다.
+# 한번에 최대 100개까지 쿼리 가능
 def get_current_price(coin_name):
     price = pyupbit.get_current_price(coin_name)
     print("[Price] {name} : {price}".format(name=coin_name, price=price))
 
 
-# coin 이름을 리턴 한다.
+# 업비트가 지원하는 모든 암호화폐 목록을 얻어옵니다.
 # market_type : "KRW", "BTC", "USDT"
 def get_tickers(market_type):
     tickers = pyupbit.get_tickers(market_type)
@@ -36,7 +39,7 @@ def getMinutePrice(coin_name, mins):
         scale = "minute60"
 
     res = pyupbit.get_ohlcv(coin_name, scale)
-    print(res)
+    print(res.tail)
     return res
 
 
@@ -57,3 +60,17 @@ def get_weekly_price(coin_name):
 def get_monthly_price(coin_name):
     df = pyupbit.get_ohlcv(coin_name, "month")
     print(df)
+
+# 매수/매도 호가 정보를 조회합니다.
+def get_order_book(coin_name):
+    df = pyupbit.get_orderbook(ticker=coin_name)
+    print(df)
+
+
+if __name__ == '__main__':
+    print("hello")
+    # get_current_price(["KRW-BTC", "KRW-XRP"])
+    # get_current_price("KRW-BTC")
+    # getMinutePrice("KRW-BTC", 5)
+    # get_order_book("KRW-BTC")
+    # get_order_book(["KRW-BTC", "KRW-XRP"])

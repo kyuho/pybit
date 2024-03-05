@@ -3,8 +3,7 @@
 # https://github.com/sharebook-kr/pyupbit
 # https://github.com/youtube-jocoding/pyupbit-autotrade
 
-from apis.quota.apis import get_current_price
-
+from apis.quota.quota_apis import get_current_price
 
 if __name__ == '__main__':
     get_current_price("KRW-BTC")
