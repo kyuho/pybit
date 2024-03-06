@@ -6,27 +6,33 @@ import os
 from dotenv import load_dotenv
 from pyupbit import Upbit, WebSocketManager
 
+from data.classes.Ticker import Ticker
+
 load_dotenv()
 access_key = os.getenv("access_key")
 secret_key = os.getenv("secret_key")
 
-def getAccountBalance() :
+
+def getAccountBalance():
     upbit = Upbit(access_key, secret_key)
     balance = upbit.get_balances()
     print(balance)
+
 
 def getAccountBalanceOf(coin):
     upbit = Upbit(access_key, secret_key)
     balance = upbit.get_balance(coin)
     print(balance)
 
+
 # 마켓별 주문 가능 정보를 확인한다.
-def getChance() :
+def getChance():
     upbit = Upbit(access_key, secret_key)
     chance = upbit.get_chance("KRW-BTC")
     print(chance)
 
-def cancel_order(order_id) :
+
+def cancel_order(order_id):
     upbit = Upbit(access_key, secret_key)
     uuid = "uuid"  # 취소하고자하는 주문의 uuid
     cancel_result = upbit.cancel_order(uuid)
@@ -39,22 +45,23 @@ def buy_at_price(coin, price, volume):
     upbit = Upbit(access_key, secret_key)
     upbit.buy_limit_order(coin, price, volume)
 
+
 # response
-    # {'uuid': '1907dcdc-2b96-4d85-9963-866f7aa220cd',
-    #  'side': 'bid',
-    #  'ord_type': 'limit',
-    #  'price': '613.0',
-    #  'state': 'wait',
-    #  'market': 'KRW-XRP',
-    #  'created_at': '2021-03-21T15:10:32+09:00',
-    #  'volume': '10.0',
-    #  'remaining_volume': '10.0',
-    #  'reserved_fee': '3.065',
-    #  'remaining_fee': '3.065',
-    #  'paid_fee': '0.0',
-    #  'locked': '6133.065',
-    #  'executed_volume': '0.0',
-    #  'trades_count': 0}
+# {'uuid': '1907dcdc-2b96-4d85-9963-866f7aa220cd',
+#  'side': 'bid',
+#  'ord_type': 'limit',
+#  'price': '613.0',
+#  'state': 'wait',
+#  'market': 'KRW-XRP',
+#  'created_at': '2021-03-21T15:10:32+09:00',
+#  'volume': '10.0',
+#  'remaining_volume': '10.0',
+#  'reserved_fee': '3.065',
+#  'remaining_fee': '3.065',
+#  'paid_fee': '0.0',
+#  'locked': '6133.065',
+#  'executed_volume': '0.0',
+#  'trades_count': 0}
 
 def buy_at_current_price(coin, amount_price):
     # 최우선 매도호가에 즉시 매수
@@ -64,11 +71,13 @@ def buy_at_current_price(coin, amount_price):
     upbit = Upbit(access_key, secret_key)
     upbit.buy_market_order(coin, amount_price)
 
+
 def sell_at_price(coin, price, volume):
     # 원화 시장에 리플을 600원에 20개 매도 합니다.
     # upbit.sell_limit_order("KRW-XRP", 600, 20)
     upbit = Upbit(access_key, secret_key)
     upbit.sell_limit_order(coin, price, volume)
+
 
 # response
 #     {'uuid': '0bcf0916-a7f5-49ed-80a9-a45e9e190cd3',
@@ -95,8 +104,9 @@ def sell_at_current_price(coin, volume):
     upbit = Upbit(access_key, secret_key)
     upbit.sell_market_order(coin, volume)
 
+
 # 입력한 암호화폐의 미체결 주문을 조회
-def get_unmatched_orders(coin) :
+def get_unmatched_orders(coin):
     upbit = Upbit(access_key, secret_key)
     upbit.get_order(coin)
 
@@ -121,7 +131,7 @@ def get_unmatched_orders(coin) :
 
 
 # 완료된 주문들을 조회
-def get_matched_orders(coin) :
+def get_matched_orders(coin):
     upbit = Upbit(access_key, secret_key)
     upbit.get_order(coin, state="done")
 
@@ -158,7 +168,7 @@ def get_matched_orders(coin) :
     #   'trades_count': 2}]
 
 
-def get_order_info(order_uuid) :
+def get_order_info(order_uuid):
     upbit = Upbit(access_key, secret_key)
     order = upbit.get_order(order_uuid)
     print(order)
@@ -173,7 +183,7 @@ def get_order_info(order_uuid) :
 
 
 # 매수 / 매도 주문을 취소.
-def cancel_order(order_uuid) :
+def cancel_order(order_uuid):
     upbit = Upbit(access_key, secret_key)
     upbit.cancel_order(order_uuid)
 
@@ -185,17 +195,25 @@ def cancel_order(order_uuid) :
 
 
 
+
+
+
+
 if __name__ == '__main__':
     print("hello")
 
     # getAccountBalanceOf("KRW")
     # getChance()
 
+    # orderbook : 시세호가정보
     # WebSocket을 이용해서 현재가, 호가, 체결에 대한 정보를 수신합니다.
     # wm = WebSocketManager("ticker", ["KRW-BTC"])
-    wm = WebSocketManager("orderbook", ["KRW-BTC"])
-    # wm = WebSocketManager("transaction", ["KRW-BTC"])
+    # ticker_data = Ticker(data)
+    # wm = WebSocketManager("orderbook", ["KRW-BTC"])
+    # order_book = OrderBook(data)
+    wm = WebSocketManager("trade", ["KRW-BTC"])
     for i in range(10):
         data = wm.get()
         print(data)
+
     wm.terminate()
