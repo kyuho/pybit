@@ -2,3 +2,4 @@ pyupbit==0.2.33
 python-dotenv==1.0.0
 pyjwt==2.8.0
 urllib3==1.26.6
+instructor==0.4.8

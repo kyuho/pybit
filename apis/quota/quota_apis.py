@@ -10,7 +10,7 @@ import pyupbit
 # 한번에 최대 100개까지 쿼리 가능
 def get_current_price(coin_name):
     price = pyupbit.get_current_price(coin_name)
-    print("[Price] {name} : {price}".format(name=coin_name, price=price))
+    print("{price}".format(name=coin_name, price=price))
 
 
 # 업비트가 지원하는 모든 암호화폐 목록을 얻어옵니다.
@@ -18,12 +18,11 @@ def get_current_price(coin_name):
 def get_tickers(market_type):
     tickers = pyupbit.get_tickers(market_type)
     print(tickers)
-    print(type(tickers))
 
 
 # 분봉
 # 1, 3, 5, 10, 15, 30, 60, 240분봉에 대해서 최대 200개 조회 가능
-def getMinutePrice(coin_name, mins):
+def get_minute_price(coin_name, mins):
     scale = "minute1"
     if mins == 1:
         scale = "minute1"
@@ -39,7 +38,8 @@ def getMinutePrice(coin_name, mins):
         scale = "minute60"
 
     res = pyupbit.get_ohlcv(coin_name, scale)
-    print(res.tail)
+
+    print(res)
     return res
 
 
@@ -70,7 +70,8 @@ def get_order_book(coin_name):
 if __name__ == '__main__':
     print("hello")
     # get_current_price(["KRW-BTC", "KRW-XRP"])
+    # get_tickers("KRW")
     # get_current_price("KRW-BTC")
-    # getMinutePrice("KRW-BTC", 5)
+    get_minute_price("KRW-BTC", 5)
     # get_order_book("KRW-BTC")
     # get_order_book(["KRW-BTC", "KRW-XRP"])
